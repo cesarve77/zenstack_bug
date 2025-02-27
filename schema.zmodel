@@ -1,0 +1,36 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "sqlite"
+    url      = env("DATABASE_URL")
+}
+
+
+model User {
+    id    Int    @id @default(autoincrement())
+    name  String
+    video Video?
+    @@allow("all",true)
+}
+
+
+model Asset {
+    id        Int      @id() @default(autoincrement())
+    createdAt DateTime @default(now())
+    viewCount Int      @default(0)
+    typeAsset String
+    @@delegate(typeAsset)
+    @@allow("all",true)
+}
+
+model Video extends Asset {
+    duration Int
+    url      String
+    user     User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    userId   Int    @unique
+}

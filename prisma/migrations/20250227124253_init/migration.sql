@@ -1,0 +1,26 @@
+-- CreateTable
+CREATE TABLE "User" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "name" TEXT NOT NULL
+);
+
+-- CreateTable
+CREATE TABLE "Asset" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "viewCount" INTEGER NOT NULL DEFAULT 0,
+    "typeAsset" TEXT NOT NULL
+);
+
+-- CreateTable
+CREATE TABLE "Video" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "duration" INTEGER NOT NULL,
+    "url" TEXT NOT NULL,
+    "userId" INTEGER NOT NULL,
+    CONSTRAINT "Video_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT "Video_id_fkey" FOREIGN KEY ("id") REFERENCES "Asset" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Video_userId_key" ON "Video"("userId");
